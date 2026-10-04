@@ -1,6 +1,6 @@
 # 〰️ LC 공진 주파수 계산기
 
-**https://ahnjonghyunn.github.io/lc-resonance/**
+**https://ajh-project.github.io/lc-resonance/**
 
 f₀ = 1 / (2π√LC)
 
