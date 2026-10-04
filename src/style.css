@@ -343,6 +343,62 @@ code {
   padding: 0 4px;
 }
 
+/* 단위 설명 */
+.units h3 {
+  margin: 14px 0 8px;
+  font-size: 14px;
+}
+.units h3:first-of-type {
+  margin-top: 0;
+}
+.units table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.units th,
+.units td {
+  padding: 8px 6px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.units tbody th {
+  font-family: var(--mono);
+  color: var(--accent);
+  white-space: nowrap;
+  width: 1%;
+  padding-right: 12px;
+}
+.units td b {
+  display: block;
+  font-weight: 600;
+}
+.units td span {
+  color: var(--dim);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.units thead th {
+  border-top: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dim);
+  font-family: var(--sans);
+  white-space: nowrap;
+}
+.units .prefix td:last-child {
+  color: var(--dim);
+  font-size: 12px;
+}
+.units .mono {
+  font-family: var(--mono);
+  white-space: nowrap;
+}
+.units sup {
+  font-size: 0.7em;
+}
+
 footer {
   margin-top: 8px;
   text-align: center;

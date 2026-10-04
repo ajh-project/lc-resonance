@@ -94,6 +94,7 @@ const EXAMPLES: { name: string; set: Partial<Record<Target, [string, string]>>; 
   { name: 'RFID 13.56 MHz', target: 'C', set: { f: ['13.56', 'MHz'], L: ['1', 'µH'] } },
   { name: 'FM 100 MHz', target: 'L', set: { f: ['100', 'MHz'], C: ['10', 'pF'] } },
   { name: '오디오 1 kHz', target: 'f', set: { L: ['10', 'mH'], C: ['2.533', 'µF'] } },
+  { name: '테라헤르츠 ~5 THz', target: 'f', set: { L: ['1', 'pH'], C: ['1', 'fF'] } },
 ]
 
 function applyExample(ex: (typeof EXAMPLES)[number]) {
@@ -103,6 +104,27 @@ function applyExample(ex: (typeof EXAMPLES)[number]) {
     inputs[t].unit = unit
   }
 }
+
+const BASE_UNITS = [
+  { sym: 'Hz', name: '헤르츠 · 주파수', desc: '1초에 몇 번 진동하는지. 1 kHz = 1초에 1,000번' },
+  { sym: 'H', name: '헨리 · 인덕턴스 L', desc: '코일이 전류 변화를 막으려는 정도. 보통 µH, nH 단위를 많이 써요' },
+  { sym: 'F', name: '패럿 · 커패시턴스 C', desc: '커패시터가 전하를 저장하는 정도. 보통 pF, nF, µF 단위를 많이 써요' },
+  { sym: 'rad/s', name: '라디안/초 · 각주파수 ω', desc: 'ω = 2πf. 회로 계산식에서 주로 쓰는 주파수 표현' },
+  { sym: 's', name: '초 · 주기 T', desc: '한 번 진동하는 데 걸리는 시간. T = 1/f' },
+  { sym: 'Ω', name: '옴 · 임피던스', desc: '교류에서 전류를 방해하는 정도. 공진 때는 X_L = X_C' },
+]
+
+const PREFIXES = [
+  { sym: 'T', name: '테라', exp: '12', ex: '1 THz = 1,000 GHz' },
+  { sym: 'G', name: '기가', exp: '9', ex: '2.4 GHz (와이파이)' },
+  { sym: 'M', name: '메가', exp: '6', ex: '100 MHz (FM 라디오)' },
+  { sym: 'k', name: '킬로', exp: '3', ex: '1 kHz = 1,000 Hz' },
+  { sym: 'm', name: '밀리', exp: '−3', ex: '10 mH = 0.01 H' },
+  { sym: 'µ', name: '마이크로', exp: '−6', ex: '4.7 µF = 0.0000047 F' },
+  { sym: 'n', name: '나노', exp: '−9', ex: '1 nF = 1,000 pF' },
+  { sym: 'p', name: '피코', exp: '−12', ex: '22 pF' },
+  { sym: 'f', name: '펨토', exp: '−15', ex: '1 fF = 0.001 pF' },
+]
 
 const copied = ref(false)
 async function copy() {
@@ -204,7 +226,46 @@ const rawResult = computed(() => {
       <div class="chips">
         <button v-for="ex in EXAMPLES" :key="ex.name" type="button" @click="applyExample(ex)">{{ ex.name }}</button>
       </div>
-      <p class="tip">팁: 숫자 뒤에 <code>p n u m k M G</code>를 붙여도 돼요 (예: <code>4.7u</code>, <code>22pF</code>, <code>2.4G</code>)</p>
+      <p class="tip">팁: 숫자 뒤에 <code>f p n u m k M G T</code>를 붙여도 돼요 (예: <code>4.7u</code>, <code>22pF</code>, <code>2.4G</code>, <code>1.5T</code>)</p>
+    </section>
+
+    <!-- 단위 설명 -->
+    <section class="card units">
+      <p class="label">단위 설명</p>
+
+      <h3>기본 단위</h3>
+      <table>
+        <tbody>
+          <tr v-for="u in BASE_UNITS" :key="u.sym">
+            <th>{{ u.sym }}</th>
+            <td>
+              <b>{{ u.name }}</b>
+              <span>{{ u.desc }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>접두어 (크기)</h3>
+      <table class="prefix">
+        <thead>
+          <tr>
+            <th>기호</th>
+            <th>읽기</th>
+            <th>배수</th>
+            <th>예시</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="p in PREFIXES" :key="p.sym">
+            <th>{{ p.sym }}</th>
+            <td>{{ p.name }}</td>
+            <td class="mono">10<sup>{{ p.exp }}</sup></td>
+            <td class="mono">{{ p.ex }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="tip">입력할 때 <code>u</code>는 µ(마이크로) 대신 쓸 수 있어요. 대소문자를 구분해요: <code>m</code> = 밀리, <code>M</code> = 메가.</p>
     </section>
 
     <footer>f₀ = 1 / (2π√LC) · 이상적인 LC 회로 기준 (저항 무시)</footer>

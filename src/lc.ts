@@ -13,6 +13,7 @@ export const UNITS: Record<Target, Unit[]> = {
     { label: 'kHz', factor: 1e3 },
     { label: 'MHz', factor: 1e6 },
     { label: 'GHz', factor: 1e9 },
+    { label: 'THz', factor: 1e12 },
   ],
   L: [
     { label: 'H', factor: 1 },
@@ -20,6 +21,7 @@ export const UNITS: Record<Target, Unit[]> = {
     { label: 'µH', factor: 1e-6 },
     { label: 'nH', factor: 1e-9 },
     { label: 'pH', factor: 1e-12 },
+    { label: 'fH', factor: 1e-15 },
   ],
   C: [
     { label: 'F', factor: 1 },
@@ -27,6 +29,7 @@ export const UNITS: Record<Target, Unit[]> = {
     { label: 'µF', factor: 1e-6 },
     { label: 'nF', factor: 1e-9 },
     { label: 'pF', factor: 1e-12 },
+    { label: 'fF', factor: 1e-15 },
   ],
 }
 
@@ -45,6 +48,7 @@ export function solve(target: Target, v: { f: number; L: number; C: number }): n
 
 /** "4.7", "4.7e-6", "10u", "100p", "2.2k" 같은 입력을 숫자로 (접두어가 있으면 단위 선택보다 우선) */
 const PREFIX: Record<string, number> = {
+  f: 1e-15,
   p: 1e-12,
   n: 1e-9,
   u: 1e-6,
@@ -55,12 +59,13 @@ const PREFIX: Record<string, number> = {
   K: 1e3,
   M: 1e6,
   G: 1e9,
+  T: 1e12,
 }
 
 export function parseInput(raw: string): { value: number; prefixed: boolean } | null {
   const s = raw.trim().replace(/,/g, '').replace(/\s+/g, '')
   if (!s) return null
-  const m = s.match(/^([+]?\d*\.?\d+(?:e[+-]?\d+)?)([pnuµμmkKMG]?)[a-zA-Z]*$/i)
+  const m = s.match(/^([+]?\d*\.?\d+(?:e[+-]?\d+)?)([fpnuµμmkKMGT]?)[a-zA-Z]*$/i)
   if (!m) return null
   const num = Number(m[1])
   if (!isFinite(num) || num <= 0) return null
@@ -91,6 +96,7 @@ export function sig(n: number, digits = 4): string {
 /** 단위 접두어가 붙은 일반 표기 (ω, T, Z 등) */
 export function eng(value: number, base: string): string {
   const steps: [number, string][] = [
+    [1e12, 'T'],
     [1e9, 'G'],
     [1e6, 'M'],
     [1e3, 'k'],
@@ -99,6 +105,7 @@ export function eng(value: number, base: string): string {
     [1e-6, 'µ'],
     [1e-9, 'n'],
     [1e-12, 'p'],
+    [1e-15, 'f'],
   ]
   const [f, p] = steps.find(([f]) => Math.abs(round4(value / f)) >= 1) ?? steps[steps.length - 1]
   return `${sig(value / f)} ${p}${base}`
