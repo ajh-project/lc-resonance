@@ -1,0 +1,351 @@
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --line: #e3e6eb;
+  --text: #14171c;
+  --dim: #69707d;
+  --accent: #2563eb;
+  --accent-soft: #e8efff;
+  --bad: #dc2626;
+  --sans: 'Inter', 'Pretendard', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --serif: 'Noto Serif', 'Times New Roman', serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --line: #2a2f3a;
+    --text: #e8eaf0;
+    --dim: #8b93a3;
+    --accent: #6ea0ff;
+    --accent-soft: #1b2640;
+    --bad: #f87171;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+h1 {
+  margin: 4px 0 0;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+/* 공식 */
+.formula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 18px 0 14px;
+  font-family: var(--serif);
+  font-size: 30px;
+}
+.formula .var {
+  font-style: italic;
+}
+.formula sub {
+  font-size: 0.55em;
+  font-style: normal;
+  vertical-align: -0.25em;
+  margin-left: 1px;
+}
+.formula .eq {
+  margin: 0 14px;
+}
+.frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.frac .num {
+  padding: 0 6px 4px;
+}
+.frac .den {
+  border-top: 2px solid currentColor;
+  padding: 4px 6px 0;
+  display: inline-flex;
+  align-items: flex-end;
+}
+.sqrt {
+  position: relative;
+  margin-left: 18px;
+  padding: 0 2px 0 3px;
+  border-top: 2px solid currentColor;
+  line-height: 1.15;
+}
+.sqrt::before {
+  content: '√';
+  position: absolute;
+  left: -17px;
+  top: -6px;
+  font-style: normal;
+  font-size: 1.05em;
+}
+
+/* 카드 */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+.label {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dim);
+}
+
+.seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 4px;
+  background: var(--bg);
+  border-radius: 12px;
+}
+.seg button {
+  border: 0;
+  background: none;
+  border-radius: 9px;
+  padding: 8px 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--dim);
+}
+.seg button b {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+}
+.seg button small {
+  font-size: 11px;
+}
+.seg button.on {
+  background: var(--card);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fname {
+  font-size: 13px;
+  font-weight: 500;
+}
+.fname i {
+  font-family: var(--serif);
+  color: var(--dim);
+  margin-left: 2px;
+}
+.inrow {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.inrow:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field.bad .inrow {
+  border-color: var(--bad);
+}
+.inrow input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 17px;
+}
+.inrow input::placeholder {
+  color: var(--dim);
+  opacity: 0.6;
+  font-size: 14px;
+}
+.inrow select {
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: var(--bg);
+  padding: 0 12px;
+  font-family: var(--mono);
+  font-size: 15px;
+  cursor: pointer;
+  outline: 0;
+}
+.err {
+  font-size: 12px;
+  color: var(--bad);
+}
+
+/* 결과 */
+.result {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, var(--accent-soft), var(--card) 70%);
+}
+.result.empty {
+  border-color: var(--line);
+  background: var(--card);
+}
+.big {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.big .n {
+  font-family: var(--mono);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.big .u {
+  font-family: var(--mono);
+  font-size: 20px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.copy {
+  margin-left: auto;
+  align-self: center;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.raw {
+  margin: 4px 0 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--dim);
+}
+.steps {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+.placeholder {
+  margin: 0;
+  color: var(--dim);
+  font-size: 14px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px 12px;
+  margin: 0;
+  font-size: 13px;
+}
+.details dt {
+  color: var(--dim);
+}
+.details dd {
+  margin: 0;
+  font-family: var(--mono);
+  text-align: right;
+}
+
+.examples .label {
+  margin-left: 2px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chips button {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.chips button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.tip {
+  margin: 12px 2px 0;
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.6;
+}
+code {
+  font-family: var(--mono);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+footer {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--dim);
+}
